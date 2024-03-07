@@ -1,0 +1,96 @@
+# SGMSE small: 4.1 M parameters
+optim: adam
+init: none
+unused_parameters: true
+max_epoch: 100
+batch_type: folded
+batch_size: 2
+iterator_type: chunk
+chunk_length: 32640
+chunk_default_fs: 16000
+num_iters_per_epoch: 1000
+num_workers: 4
+optim_conf:
+    lr: 1.0e-04
+    # eps: 1.0e-08
+    # weight_decay: 1.0e-7
+patience: 50
+val_scheduler_criterion:
+- valid
+- loss
+best_model_criterion:
+-   - valid
+    - loss
+    - min
+keep_nbest_models: 5
+scheduler: steplr
+scheduler_conf:
+    step_size: 2
+    gamma: 0.97
+
+allow_multi_rates: true
+
+preprocessor: enh
+channel_reordering: true
+force_single_channel: true
+# The categories list order must be the same everywhere in this config
+categories:
+- 1ch_8k
+- 1ch_8k_r
+- 1ch_16k_r
+- 1ch_48k
+- 1ch_24k
+- 1ch_16k
+- 2ch_8k
+- 2ch_8k_r
+- 2ch_16k
+- 2ch_16k_r
+- 5ch_8k
+- 5ch_16k
+- 8ch_8k_r
+- 8ch_16k_r
+num_spk: 1
+
+model_conf:
+    always_forward_in_48k: true
+    normalize: True
+    # The categories list order must be the same everywhere in this config
+    categories:
+    - 1ch_8k
+    - 1ch_8k_r
+    - 1ch_16k_r
+    - 1ch_48k
+    - 1ch_24k
+    - 1ch_16k
+    - 2ch_8k
+    - 2ch_8k_r
+    - 2ch_16k
+    - 2ch_16k_r
+    - 5ch_8k
+    - 5ch_16k
+    - 8ch_8k_r
+    - 8ch_16k_r
+
+encoder: stft
+encoder_conf:
+    n_fft: 510
+    hop_length: 128
+    spec_transform_type: exponent
+decoder: stft
+decoder_conf:
+    n_fft: 510
+    hop_length: 128
+    spec_transform_type: exponent
+
+diffusion_model: sgmse
+diffusion_model_conf:
+    score_model: ncsnpp
+    score_model_conf:
+        nf: 32
+        ch_mult: [1, 1, 2, 2, 2, 2, 2]
+    loss_type: "mse"
+    sde: ouve
+    sde_conf:
+        sigma_min: 0.05
+        sigma_max: 0.5
+        N: 1000
