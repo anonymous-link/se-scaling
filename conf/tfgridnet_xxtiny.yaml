@@ -71,6 +71,9 @@ model_conf:
     - 8ch_8k_r
     - 8ch_16k_r
 
+#====================================================
+# Model configuration
+#====================================================
 encoder: stft
 encoder_conf:
     n_fft: 960
@@ -81,28 +84,28 @@ decoder: stft
 decoder_conf:
     n_fft: 960
     hop_length: 480
-    default_fs: 48000                            
-separator: tfgridnetv3                            
-separator_conf:                                   
-    n_srcs: 1                                     
-    n_imics: 1                                    
-    n_layers: 2                                   
-    lstm_hidden_units: 32
-    attn_n_head: 2                                
-    attn_qk_output_channel: 2                     
-    emb_dim: 16
-    emb_ks: 4                                     
-    emb_hs: 1                                     
-    activation: prelu                             
-    eps: 1.0e-5
+    default_fs: 48000
+separator: tfgridnetv3
+separator_conf:
+    n_srcs: 1
+    n_imics: 1                 # number of input microphones
+    n_layers: 2                # number of TF-GridNet blocks
+    lstm_hidden_units: 32      # hidden dimension in LSTMs
+    attn_n_head: 2             # number of attention heads in each TF-GridNet block
+    attn_qk_output_channel: 2  # approximate dimention of frame-level key and value tensors
+    emb_dim: 16                # embedding dimension of each T-F bin
+    emb_ks: 4                  # kernel size for unfolding and deconv1D
+    emb_hs: 1                  # hop size for unfolding and deconv1D
+    activation: prelu          # activation function to use in the whole TF-GridNet model
+    eps: 1.0e-5                # small epsilon for normalization layers
 
 # A list for criterions
 # The overlall loss in the multi-task learning will be:
 # loss = weight_1 * loss_1 + ... + weight_N * loss_N
 # The default `weight` for each sub-loss is 1.0
-criterions: 
+criterions:
   # The first criterion
-  - name: mr_l1_tfd 
+  - name: mr_l1_tfd
     conf:
       window_sz: [256, 512, 768, 1024]
       hop_sz: null
@@ -113,7 +116,7 @@ criterions:
     wrapper_conf:
       weight: 1.0
   # The second criterion
-  - name: si_snr 
+  - name: si_snr
     conf:
       eps: 1.0e-7
     wrapper: fixed_order

@@ -72,6 +72,9 @@ model_conf:
     - 8ch_8k_r
     - 8ch_16k_r
 
+#====================================================
+# Model configuration
+#====================================================
 encoder: conv
 encoder_conf:
     channel: 1536 # for 48000 Hz input
@@ -85,14 +88,14 @@ decoder_conf:
 separator: tcn
 separator_conf:
     num_spk: 1
-    layer: 8
-    stack: 4
-    bottleneck_dim: 64
-    hidden_dim: 128
-    kernel: 3
-    causal: False
-    norm_type: "gLN"
-    nonlinear: relu
+    layer: 8            # number of conv modules in each TCN block
+    stack: 4            # number of TCN blocks
+    bottleneck_dim: 64  # bottleck channel dimension in all TCNs
+    hidden_dim: 128     # hidden channel dimension in all conv modules
+    kernel: 3           # kernel size of DepthwiseSeparableConv in each conv module
+    causal: False       # non-causal
+    norm_type: "gLN"    # global LayerNorm
+    nonlinear: relu     # activation function for final mask estiamtion
 
 # A list for criterions
 # The overlall loss in the multi-task learning will be:

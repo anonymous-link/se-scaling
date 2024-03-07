@@ -71,6 +71,9 @@ model_conf:
     - 8ch_8k_r
     - 8ch_16k_r
 
+#====================================================
+# Model configuration
+#====================================================
 encoder: stft
 encoder_conf:
     n_fft: 510
@@ -86,11 +89,11 @@ diffusion_model: sgmse
 diffusion_model_conf:
     score_model: ncsnpp
     score_model_conf:
-        nf: 64
-        ch_mult: [1, 1, 2, 2, 2, 2, 2]
-    loss_type: "mse"
-    sde: ouve
+        nf: 64                          # number of initial channels
+        ch_mult: [1, 1, 2, 2, 2, 2, 2]  # multiplication factors in encoder layers
+    loss_type: "mse"                    # loss type
+    sde: ouve                           # Ornstein-Uhlenbeck Variance Exploding SDE
     sde_conf:
-        sigma_min: 0.05
-        sigma_max: 0.5
-        N: 1000
+        sigma_min: 0.05                 # min value of std
+        sigma_max: 0.5                  # max value of std
+        N: 1000                         # number of time steps during training

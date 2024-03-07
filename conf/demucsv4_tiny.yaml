@@ -76,20 +76,23 @@ model_conf:
     - 8ch_8k_r
     - 8ch_16k_r
 
+#====================================================
+# Model configuration
+#====================================================
 encoder: same
 decoder: same
 separator: demucsv3
 separator_conf:
   sources: [speech]
-  nfft: 4096
-  channels: 12
-  depth: 4
-  t_layers: 2
-  time_stride: 2
-  stride: 4
-  samplerate: 48000
-  segment: 4
-  use_train_segment: false
+  nfft: 4096                # FFT size in STFT/iSTFT
+  channels: 12              # initial number of hidden channels
+  depth: 4                  # number of encoder/decoder layers
+  t_layers: 2               # number of layers in each branch (waveform and spec) of the transformer
+  time_stride: 2            # stride for the final time layer, after the merge
+  stride: 4                 # stride for encoder and decoder layers
+  samplerate: 48000         # sampling frequency that the model operates on
+  segment: 4                # segment length for training (in seconds), unused when use_train_segment=False
+  use_train_segment: false  # if True, the actual size that is used during training is used during inference
 
 # A list for criterions
 # The overlall loss in the multi-task learning will be:

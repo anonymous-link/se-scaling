@@ -71,6 +71,9 @@ model_conf:
     - 8ch_8k_r
     - 8ch_16k_r
 
+#====================================================
+# Model configuration
+#====================================================
 encoder: stft
 encoder_conf:
     n_fft: 960
@@ -85,10 +88,10 @@ decoder_conf:
 separator: bsrnn
 separator_conf:
     num_spk: 1
-    num_channels: 64
-    num_layers: 6
-    target_fs: 48000
-    ref_channel: 0
+    num_channels: 64  # embedding dimension of each T-F bin
+    num_layers: 6     # number of time and frequency modeling layers
+    target_fs: 48000  # highest sampling frequency to model
+    ref_channel: 0    # used for multichannel signals
 
 # A list for criterions
 # The overlall loss in the multi-task learning will be:
